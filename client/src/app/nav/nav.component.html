@@ -13,10 +13,12 @@
           <li class="nav-item">
             <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#" (click)="logout()">Logout</a>
-          </li>
         </ng-container>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/errors" routerLinkActive="active">Errors</a>
+        </li>
+        
         
       </ul>
 
@@ -30,22 +32,28 @@
       </div>
 
       <form  *ngIf="(accountService.currentUser$ |async) === null" loginForm="ngForm" 
-      class="form-inline mt-2 mt-md-0" (ngSubmit)="login()" autocomplete="off" >
+      class="row g-3" (ngSubmit)="login()" autocomplete="off" >
+      <div class="col-auto">
         <input 
             name="username"
             [(ngModel)]="model.username"
-            class="form-control mr-sm-2" 
+            class="form-control" 
             type="text" 
             placeholder="Username" />
+       </div>
+      <div class="col-auto">
         <input 
             name="password"
             [(ngModel)]="model.password"
-            class="form-control mr-sm-2" 
+            class="form-control" 
             type="password" 
             placeholder="Password" />
-        <button class="btn btn-success my-2 my-sm-0" type="submit">
-          Login
-        </button>
+       </div>
+       <div class="col-auto">
+            <button class="btn btn-success mb-3" type="submit">
+              Login
+            </button>
+        </div>
       </form>
     </div>
   </nav>
