@@ -8,7 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { AccountService } from '../_services/account.service';
 import { User } from '../_models/user';
-import {take} from 'rxjs/operators'
+import {take} from 'rxjs/operators';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -23,7 +23,7 @@ export class JwtInterceptor implements HttpInterceptor {
     {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${currentUser.tokken}`
+          Authorization: `Bearer ${currentUser.token}`
         }
       })
     }
