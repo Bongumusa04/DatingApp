@@ -33,7 +33,7 @@ namespace API.Controllers
 
             var userVisit = await _unitOfWork.VisitsRepository.GetUserVisit(sourceUserId, visitedUser.Id);
 
-            if (userVisit != null) return BadRequest("You already like this user");
+            if (userVisit != null) return BadRequest("You already visited this user");
 
             userVisit = new Entities.UserVisit
             {
