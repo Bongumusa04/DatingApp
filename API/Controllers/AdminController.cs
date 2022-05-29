@@ -13,9 +13,9 @@ namespace API.Controllers
     public class AdminController: BaseApiController
     {
         private readonly UserManager<AppUser> _userManager;     
-        private readonly UnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IPhotoService _photoService;
-        public AdminController(UserManager<AppUser> userManager, UnitOfWork unitOfWork, IPhotoService photoService)
+        public AdminController(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, IPhotoService photoService)
         {
             _photoService = photoService;
             _unitOfWork = unitOfWork;
@@ -75,13 +75,20 @@ namespace API.Controllers
         }
 
         [Authorize(Policy = "ModeratePhotoRole")]
-        [HttpPost("approvePhoto/{photoId}")]
+        [HttpPost("approve-photo/{photoId}")]
 
         public async Task<ActionResult> ApprovePhoto(int photoId)
         {
             var photo = await _unitOfWork.PhotoRepository.GetPhotoById(photoId);
-
+            
             photo.IsApproved = true;
+
+            //see if users have any main photos
+            var user = await _unitOfWork.UserRepository.GetUserByPhotoId(photoId);
+            if(!user.Photos.Any(p => p.IsMain))
+            {
+                photo.IsMain = true;
+            }
 
             await _unitOfWork.Complete();
             
@@ -89,7 +96,7 @@ namespace API.Controllers
         }
 
         [Authorize(Policy = "ModeratePhotoRole")]
-        [HttpPost("rejectPhoto/{photoId}")]
+        [HttpPost("reject-photo/{photoId}")]
 
         public async Task<ActionResult> RejectPhoto(int photoId)
         {

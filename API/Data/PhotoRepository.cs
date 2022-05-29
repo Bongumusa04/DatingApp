@@ -38,7 +38,8 @@ namespace API.Data
                     Username = u.AppUser.UserName,
                     Url = u.Url,
                     IsApproved = u.IsApproved
-                }).ToListAsync();  
+                })
+                .ToListAsync();  
         }
 
         public void RemovePhoto(Photo photo)

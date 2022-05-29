@@ -71,6 +71,14 @@ namespace API.Data
             return await _context.Users.FindAsync(id);
         }
 
+        public async Task<AppUser> GetUserByPhotoId(int photoId)
+        {
+            return await _context.Users 
+            .Include(p => p.Photos)
+            .IgnoreQueryFilters()
+            .SingleOrDefaultAsync(x => x.Id == photoId);
+        }
+
         public async Task<AppUser> GetUserByUsernameAsync(string username)
         {
             return await _context.Users
