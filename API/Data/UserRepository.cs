@@ -23,12 +23,24 @@ namespace API.Data
             _context = context;
         }
 
-        public async Task<MemberDto> GetMemberAsync(string username)
+        //Reference: https://stackoverflow.com/questions/60695653/ignorequeryfilters-does-not-ignore-filters-on-a-boolean
+        public async Task<MemberDto> GetMemberAsync(string username, bool isCurrentUser)
         {
-            return await _context.Users
+            
+             var query =  _context.Users
                 .Where(x => x.UserName == username)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
-                .SingleOrDefaultAsync();
+                .AsQueryable();
+
+            //var query = _context.Users.Include(p => p.Photos).AsQueryable();
+
+            if (isCurrentUser)
+            {
+                // For current user the global filter is dissabled
+                query = query.IgnoreQueryFilters();
+            }
+
+            return await query.FirstOrDefaultAsync();  
         }
 
         public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
