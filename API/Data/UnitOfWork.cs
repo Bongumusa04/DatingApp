@@ -20,6 +20,7 @@ namespace API.Data
 
         public ILikesRepository LikesRepository => new LikesRepository(_context);
         public IPhotoRepository PhotoRepository => new PhotoRepository(_context);
+        public IVisitsRepository VisitsRepository => new VisitsRepository(_context);
 
         public async Task<bool> Complete()
         {
