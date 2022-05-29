@@ -22,6 +22,8 @@ namespace API.Data
         public DbSet<Group> Groups{get;set;}
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<UserVisit> Visits { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -68,6 +70,21 @@ namespace API.Data
              
              builder.Entity<Photo>()
                 .HasQueryFilter(p => p.IsApproved);
+
+              builder.Entity<UserVisit>()
+                .HasKey(k => new {k.SourceUserId, k.VisitedUserId});
+
+            builder.Entity<UserVisit>()
+                .HasOne(s => s.SourceUser)
+                .WithMany(v => v.VisitedUsers)
+                .HasForeignKey(s => s.SourceUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserVisit>()
+                .HasOne(s => s.VisitedUser)
+                .WithMany(v => v.VisitedByUsers)
+                .HasForeignKey(s => s.VisitedUserId)
+                .OnDelete(DeleteBehavior.Cascade);   
                 
         }
     }
