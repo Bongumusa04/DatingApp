@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize]
     public class VisitsController : BaseApiController
     {
          private readonly IUnitOfWork _unitOfWork;
@@ -49,6 +48,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "RequireVIPRole")]
         public async Task<ActionResult<IEnumerable<VisitDto>>> GetUserVisits([FromQuery]VisitsParams visitsParams)
         {
             visitsParams.UserId = User.GetUserId();

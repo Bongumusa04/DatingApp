@@ -15,6 +15,7 @@ import { MemberDetailedResolver } from './_resolvers/member-detailed.resolver';
 import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { AdminGuard } from './_guards/admin.guard';
 import { VipComponent } from './vip/vip.component';
+import { VipGuard } from './_guards/vip.guard';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -29,7 +30,7 @@ const routes: Routes = [
       {path: 'lists', component: ListsComponent},
       {path: 'messages', component: MessagesComponent},
       {path: 'admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
-      {path: 'vip', component: VipComponent}
+      {path: 'vip', component: VipComponent, canActivate: [VipGuard]}
     ]
   },
   {path: 'errors', component: TestErrorsComponent},
